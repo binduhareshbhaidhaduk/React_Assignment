@@ -1,0 +1,23 @@
+/* Global Styles */
+:root {
+  --primary-color: #007bff; /* Define a global primary color */
+  --secondary-color: #f4f4f4; /* Light background */
+  --font-family: 'Arial', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  background-color: var(--secondary-color); /* Set background */
+  color: #333;
+}
+
+/* Apply styles to all input fields */
+input {
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}

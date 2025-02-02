@@ -1,0 +1,138 @@
+/* General Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    color: black;
+    padding: 0px !important;
+  }
+
+ 
+
+  ol,ul{
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .nav1{
+    width: 200px;
+    height: 100vh; 
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: rgb(48, 48, 48); 
+  }
+
+  .header {
+    margin-left: 200px; /* Matches .nav width */
+    width: calc(100% - 200px); /* Adjust width dynamically */
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+  }
+  li{
+    display: flex;
+    align-items: center;
+  }
+  li.nav-item{
+    margin: 0px !important;
+    padding:3px;
+  }
+  #dropdown-basic{
+    background-color: white !important;
+    color: rgb(148, 144, 144) !important;
+    padding-left: 0px;
+    font-weight: 600 !important;
+  }
+  .submenu a{
+    background-color: white !important;
+    color: rgb(148, 144, 144) !important;
+  }
+
+  /* Logo Styling */
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  /* sidebar */
+  .menu1{
+    color: rgb(148, 144, 144);
+    font-size: 18px;
+  }
+  
+  .menu1:hover{
+    color: #42adf5;
+    background-color:rgba(66, 173, 245, 0.15);
+    height: 40px;
+    width: 97%;
+    border-radius: 30PX;
+  }
+  .line:hover{
+    display: flex;
+    color: #42adf5;
+    justify-content:start;
+    height: 40px;
+    width: 5px;
+  }
+  
+  /* Navigation Links */
+  .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  li {
+    margin: 8px !important;
+  }
+  .active{
+    color: rgb(85, 85, 206) !important;
+  }
+  
+  .nav-link{
+    text-decoration: none;
+    color: rgb(148, 144, 144) ;
+    font-weight: 600 !important;
+    font-size: 16px;
+  }
+  
+  /* Menu Toggle Button */
+  .menu-toggle {
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  /* Responsive Navbar */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background-color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+  
+    .nav-links.active {
+      display: flex;
+    }
+  }
+  
