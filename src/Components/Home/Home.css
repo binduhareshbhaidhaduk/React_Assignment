@@ -1,5 +1,4 @@
 body {
-  overflow-y: scroll !important;
   height: 100vh; /* Ensure the body takes full height of the viewport */
   margin: 0;
 }
