@@ -5,8 +5,9 @@ import { signUp } from "../../Services/Action/action";
 import { useDispatch } from "react-redux";
 
 const SignUp = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   // State to manage form input values
   const [signup, setSignUp] = useState({
     name: "",
@@ -15,26 +16,49 @@ const SignUp = () => {
     confirmpassword: "",
   });
 
+  const [error, setError] = useState({
+    passwordLength: false,
+    passwordMatch: false,
+  });
+
   // Function to handle changes in input fields
   const handleInput = (e) => {
-    const { name, value } = e.target; // Destructuring to get field name and value
-    setSignUp({ ...signup, [name]: value }); // Updating the state dynamically
+    const { name, value } = e.target;
+    setSignUp({ ...signup, [name]: value });
+
+    // Validation checks
+    if (name === "password") {
+      setError({
+        ...error,
+        passwordLength: value.length < 6, // Check password length
+      });
+    }
+    if (name === "confirmpassword") {
+      setError({
+        ...error,
+        passwordMatch: value !== signup.password, // Check if passwords match
+      });
+    }
   };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload on form submission
+    e.preventDefault();
 
-    // Check if password and confirm password match
-    if (signup.password === signup.confirmpassword) {
-      // Here, you can integrate Firebase authentication for user sign-up
-      console.log("Sign Up Success...",signup);
-      dispatch(signUp(signup.email,signup.confirmpassword));
-      console.log();
-      navigate('/');
-    } else {
-      alert("Passwords do not match!"); // Alert user if passwords don't match
+    // Final validation before submitting
+    if (signup.password.length < 6) {
+      setError({ ...error, passwordLength: true });
+      return;
     }
+    if (signup.password !== signup.confirmpassword) {
+      setError({ ...error, passwordMatch: true });
+      return;
+    }
+
+    // If validation passes, proceed with sign-up
+    console.log("Sign Up Success...", signup);
+    dispatch(signUp(signup.email, signup.password));
+    navigate('/');
   };
 
   return (
@@ -42,6 +66,7 @@ const SignUp = () => {
       <div className="signup-box">
         <h2 className="d-flex justify-content-center">Sign Up</h2>
         <form onSubmit={handleSubmit}>
+          
           {/* Full Name Input */}
           <div className="input-group">
             <label>Full Name</label>
@@ -60,7 +85,7 @@ const SignUp = () => {
           <div className="input-group">
             <label>Email</label>
             <input
-            className="form-control"
+              className="form-control"
               type="email"
               name="email"
               placeholder="Enter your email"
@@ -74,7 +99,7 @@ const SignUp = () => {
           <div className="input-group">
             <label>Password</label>
             <input
-            className="form-control"
+              className={`form-control ${error.passwordLength ? "input-error" : ""}`}
               type="password"
               name="password"
               placeholder="Enter your password"
@@ -82,13 +107,16 @@ const SignUp = () => {
               value={signup.password}
               onChange={handleInput}
             />
+            {error.passwordLength && (
+              <small className="error-text text-danger">Password must be at least 6 characters.</small>
+            )}
           </div>
 
           {/* Confirm Password Input */}
           <div className="input-group">
             <label>Confirm Password</label>
             <input
-            className="form-control"
+              className={`form-control ${error.passwordMatch ? "input-error" : ""}`}
               type="password"
               name="confirmpassword"
               placeholder="Confirm your password"
@@ -96,6 +124,9 @@ const SignUp = () => {
               value={signup.confirmpassword}
               onChange={handleInput}
             />
+            {error.passwordMatch && (
+              <small className="error-text text-danger">Passwords do not match.</small>
+            )}
           </div>
 
           {/* Submit Button */}
