@@ -1,5 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth"
-import { auth, provider } from "../../../firebase";
+import { auth, provider ,db} from "../../../firebase";
+import { getDocs, collection, setDoc, doc } from 'firebase/firestore';
+import generateUniqueId from "generate-unique-id";
 
 
 
@@ -26,6 +28,16 @@ export const googleLogInSuc = (user) => {
     payload: user
   }
 }
+
+export const addBidSuc = () => ({
+  type: 'ADD_BID_SUC',
+
+});
+
+export const viewBidSuc = (bids) => ({
+  type: 'VIEW_BID_SUC',
+  payload: bids,
+});
 
 export const signUp = (email, password) => {
     return (dispatch) => {
@@ -89,4 +101,33 @@ export const SignOut =()=>{
       }
 }
 
+export const addBids = (bids) => {
+  bids.id = generateUniqueId({
+    length: 4,
+    useLetters: false,
+  });
 
+  return async (dispatch) => {
+    try {
+      await setDoc(doc(db, "bids", `${bids.id}`), bids);
+      dispatch(addBidSuc(bids)); // Pass bids as payload
+    } catch (e) {
+      console.error("Error in addBids: ", e);
+    }
+  };
+};
+
+export const readBids = () => {
+  return async (dispatch) => {
+    try {
+      const bids = [];
+      const querySnapshot = await getDocs(collection(db, "bids"));
+      querySnapshot.forEach((doc) => {
+        bids.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch(viewBidSuc(bids));
+    } catch (error) {
+      console.error("Error in readBids: ", error);
+    }
+  };
+};

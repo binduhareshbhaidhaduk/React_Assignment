@@ -1,17 +1,36 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import './Home.css';
 import { Dropdown } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineArrowLongDown } from "react-icons/hi2";
 import { BsPlusSquareFill } from "react-icons/bs";
 import { SignOut } from "../../Services/Action/action";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+
+  const [bids, setBids] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
+
+  useEffect(() => {
+    const fetchBids = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "bids"));
+        const bidsData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setBids(bidsData);
+      } catch (error) {
+        console.error("Error fetching bids: ", error);
+      }
+    };
+
+    fetchBids();
+  }, []);
 
   const handleSignOut = () => {
     dispatch(SignOut());
@@ -23,229 +42,6 @@ const HomePage = () => {
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
   };
-
-  // Sample Data
-  const bids = [
-    {
-      id: 1,
-      bidNumber: "#122345678123",
-      name: "SUNDER YADAV",
-      startDate: "14/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "7hr 20min",
-      route: "Gurgaon → Mumbai",
-      vehicle: "Truck, 20ft (Close Body)",
-      weight: "4000 Kg",
-      response: '4',
-      staff: "Mohit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650125",
-        customer: "Sunder Yadav",
-        loadingPoint: "Ramchandra Ramniwas oil mill, Alwar, Rajasthan",
-        unloadingPoint: "Ramchandra Ramniwas oil mill, Alwar, Rajasthan",
-        vehicleloadingdate: "17/02/2024",
-        vehicleType: "20 ft Truck (Close Body)",
-        material: "Agricultural Products",
-        weight: "14 Tonnes",
-        requestDate: "15/02/2024",
-        expiryDate: "15/02/2024",
-        assignedStaff: "Rahul Pandey",
-        phoneNumber: "+91 332423442442",
-        targetPrice: "Rs 5000",
-        remarks: "Urgent Delivery",
-        bidders: 54,
-      },
-    },
-    {
-      id: 2,
-      bidNumber: "#122345678124",
-      name: "SUNDER YADAV",
-      startDate: "15/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "5hr 10min",
-      route: "Delhi → Bangalore",
-      vehicle: "Container, 40ft",
-      weight: "5000 Kg",
-      response: '4',
-      staff: "Amit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650126",
-        customer: "Ramesh Kumar",
-        loadingPoint: "Bangalore Warehouse, Karnataka",
-        unloadingPoint: "Mumbai Dockyard, Maharashtra",
-        vehicleType: "40 ft Container",
-        vehicleloadingdate: "17/02/2024",
-        material: "Electronics",
-        weight: "10 Tonnes",
-        requestDate: "16/02/2024",
-        expiryDate: "16/02/2024",
-        assignedStaff: "Suresh Patel",
-        phoneNumber: "+91 9876543210",
-        targetPrice: "Rs 8000",
-        remarks: "Urgent Delivery",
-        bidders: 42,
-      },
-    },
-    {
-      id: 3,
-      bidNumber: "#122345678124",
-      name: "SUNDER YADAV",
-      startDate: "15/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "5hr 10min",
-      route: "Delhi → Bangalore",
-      vehicle: "Container, 40ft",
-      weight: "5000 Kg",
-      response: '4',
-      staff: "Amit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650126",
-        customer: "Ramesh Kumar",
-        loadingPoint: "Bangalore Warehouse, Karnataka",
-        unloadingPoint: "Mumbai Dockyard, Maharashtra",
-        vehicleType: "40 ft Container",
-        vehicleloadingdate: "17/02/2024",
-        material: "Electronics",
-        weight: "10 Tonnes",
-        requestDate: "16/02/2024",
-        expiryDate: "16/02/2024",
-        assignedStaff: "Suresh Patel",
-        phoneNumber: "+91 9876543210",
-        targetPrice: "Rs 8000",
-        remarks: "Urgent Delivery",
-        bidders: 42,
-      },
-    },
-    {
-      id: 4,
-      bidNumber: "#122345678124",
-      name: "SUNDER YADAV",
-      startDate: "15/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "5hr 10min",
-      route: "Delhi → Bangalore",
-      vehicle: "Container, 40ft",
-      weight: "5000 Kg",
-      response: '4',
-      staff: "Amit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650126",
-        customer: "Ramesh Kumar",
-        loadingPoint: "Bangalore Warehouse, Karnataka",
-        unloadingPoint: "Mumbai Dockyard, Maharashtra",
-        vehicleType: "40 ft Container",
-        vehicleloadingdate: "17/02/2024",
-        material: "Electronics",
-        weight: "10 Tonnes",
-        requestDate: "16/02/2024",
-        expiryDate: "16/02/2024",
-        assignedStaff: "Suresh Patel",
-        phoneNumber: "+91 9876543210",
-        targetPrice: "Rs 8000",
-        remarks: "Urgent Delivery",
-        bidders: 42,
-      },
-    },
-    {
-      id: 5,
-      bidNumber: "#122345678124",
-      name: "SUNDER YADAV",
-      startDate: "15/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "5hr 10min",
-      route: "Delhi → Bangalore",
-      vehicle: "Container, 40ft",
-      weight: "5000 Kg",
-      response: '4',
-      staff: "Amit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650126",
-        customer: "Ramesh Kumar",
-        loadingPoint: "Bangalore Warehouse, Karnataka",
-        unloadingPoint: "Mumbai Dockyard, Maharashtra",
-        vehicleType: "40 ft Container",
-        vehicleloadingdate: "17/02/2024",
-        material: "Electronics",
-        weight: "10 Tonnes",
-        requestDate: "16/02/2024",
-        expiryDate: "16/02/2024",
-        assignedStaff: "Suresh Patel",
-        phoneNumber: "+91 9876543210",
-        targetPrice: "Rs 8000",
-        remarks: "Urgent Delivery",
-        bidders: 42,
-      },
-    },
-    {
-      id: 6,
-      bidNumber: "#122345678124",
-      name: "SUNDER YADAV",
-      startDate: "15/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "5hr 10min",
-      route: "Delhi → Bangalore",
-      vehicle: "Container, 40ft",
-      weight: "5000 Kg",
-      response: '4',
-      staff: "Amit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650126",
-        customer: "Ramesh Kumar",
-        loadingPoint: "Bangalore Warehouse, Karnataka",
-        unloadingPoint: "Mumbai Dockyard, Maharashtra",
-        vehicleType: "40 ft Container",
-        vehicleloadingdate: "17/02/2024",
-        material: "Electronics",
-        weight: "10 Tonnes",
-        requestDate: "16/02/2024",
-        expiryDate: "16/02/2024",
-        assignedStaff: "Suresh Patel",
-        phoneNumber: "+91 9876543210",
-        targetPrice: "Rs 8000",
-        remarks: "Urgent Delivery",
-        bidders: 42,
-      },
-    },
-    {
-      id: 7,
-      bidNumber: "#122345678124",
-      name: "SUNDER YADAV",
-      startDate: "15/02/2024",
-      time: " 05:40 PM",
-      remainingTime: "5hr 10min",
-      route: "Delhi → Bangalore",
-      vehicle: "Container, 40ft",
-      weight: "5000 Kg",
-      response: '4',
-      staff: "Amit ",
-      staffNum: "521500116124",
-      details: {
-        bidNo: "16515120650126",
-        customer: "Ramesh Kumar",
-        loadingPoint: "Bangalore Warehouse, Karnataka",
-        unloadingPoint: "Mumbai Dockyard, Maharashtra",
-        vehicleType: "40 ft Container",
-        vehicleloadingdate: "17/02/2024",
-        material: "Electronics",
-        weight: "10 Tonnes",
-        requestDate: "16/02/2024",
-        expiryDate: "16/02/2024",
-        assignedStaff: "Suresh Patel",
-        phoneNumber: "+91 9876543210",
-        targetPrice: "Rs 8000",
-        remarks: "Urgent Delivery",
-        bidders: 42,
-      },
-    },
-  ];
-
-
 
   return (
     <>
@@ -304,7 +100,7 @@ const HomePage = () => {
               <div className="p-1">
                 <span className="menu1 d-flex justify-content-start ps-3" >
                   <i className="bi bi-columns-gap p-1"></i>
-                  <btn className="p-1" onClick={handleSignOut}>LogOut</btn>
+                  <button className="p-1 bg-body border-0 text-secondary" onClick={handleSignOut}>LogOut</button>
                 </span>
               </div>
             </div>
@@ -317,16 +113,16 @@ const HomePage = () => {
         <div className="header">
           <ul className="nav nav-underline">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/home">Bid</a>
+              <Link className="nav-link active" aria-current="page" href="/home">Bid</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/pod">POD</a>
+              <Link className="nav-link" href="/pod">POD</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/vendor">Vendor</a>
+              <Link className="nav-link" href="/vendor">Vendor</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/user">User</a>
+              <Link className="nav-link" href="/user">User</Link>
             </li>
             <li className="nav-item">
               <Dropdown>
@@ -366,8 +162,10 @@ const HomePage = () => {
             </div>
 
 
-            <div className="d-flex bg-light gap-2 create me-5 ">
-              <button className="btn ps-3 pe-3"> Create <BsPlusSquareFill size={15} /> </button>
+            <div className="d-flex bg-light gap-2 create me-5">
+              <Link to="/create" className="btn ps-3 pe-3 d-flex align-items-center">
+                Create <BsPlusSquareFill size={15} className="ms-2" />
+              </Link>
             </div>
           </div>
 
